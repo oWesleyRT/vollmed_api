@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -42,13 +43,16 @@ public class MedicoService {
         return medicoDtoSaida;
     }
 
-    public List<MedicoDtoSaida> listarMedico() {
+    public List<MedicoDtoSaida> listarMedicos() {
         List<Medico> listaMedico = medicoRepository.findAll();
         List<MedicoDtoSaida> listaMedicoDtoSaida = new ArrayList<>();
         for (Medico medico : listaMedico) {
-            var medicoDtoSaida = new MedicoDtoSaida(medico);
-            listaMedicoDtoSaida.add(medicoDtoSaida);
+            if (medico.getAtivo()) {
+                var medicoDtoSaida = new MedicoDtoSaida(medico);
+                listaMedicoDtoSaida.add(medicoDtoSaida);
+            }
         }
+        Collections.sort(listaMedicoDtoSaida);
         return listaMedicoDtoSaida;
     }
 
@@ -93,5 +97,10 @@ public class MedicoService {
         }
         //Retornando um dto saída
         return new MedicoDtoSaida(medico);
+    }
+
+    public MedicoAtualizaDtoSaida detalharMedico(Integer id) {
+        var medico = medicoRepository.getReferenceById(id);
+        return new MedicoAtualizaDtoSaida(medico);
     }
 }
