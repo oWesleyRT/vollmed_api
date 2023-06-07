@@ -1,4 +1,4 @@
-package br.com.med.voll.api.security;
+package br.com.med.voll.api.service;
 
 import br.com.med.voll.api.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
