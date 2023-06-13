@@ -26,7 +26,7 @@ public class MedicoService {
     @Transactional
     public MedicoDtoSaida cadastraMedico(MedicoDtoEntrada medicoDtoEntrada) {
         var endereco = new Endereco(medicoDtoEntrada.getEndereco());
-        var medicoEntity = new Medico(medicoDtoEntrada);
+        var medico = new Medico(medicoDtoEntrada);
 
         try {
             var enderecoDtoValidado = enderecoService.validaCep(medicoDtoEntrada.getEndereco());
@@ -34,12 +34,12 @@ public class MedicoService {
             endereco.setBairro(enderecoDtoValidado.getBairro());
             endereco.setUf(enderecoDtoValidado.getUf());
             endereco.setCidade(enderecoDtoValidado.getLocalidade());
-            medicoEntity.setEndereco(endereco);
-            medicoRepository.save(medicoEntity);
+            medico.setEndereco(endereco);
+            medicoRepository.save(medico);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        var medicoDtoSaida = new MedicoDtoSaida(medicoRepository.getReferenceById(medicoEntity.getId()));
+        var medicoDtoSaida = new MedicoDtoSaida(medicoRepository.getReferenceById(medico.getId()));
         return medicoDtoSaida;
     }
 

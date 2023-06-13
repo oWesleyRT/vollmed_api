@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/consultas")
+@RequestMapping("/consulta")
 public class ConsultaController {
 
     @Autowired
@@ -23,8 +23,8 @@ public class ConsultaController {
     @Transactional
     public ResponseEntity agendarConsulta(@RequestBody @Valid ConsultaDtoEntrada consultaDtoEntrada){
         System.out.println(consultaDtoEntrada);
-        consultaService.agendar(consultaDtoEntrada);
-        return ResponseEntity.ok(new ConsultaDtoSaida());
+        var consultaDtoSaida = consultaService.agendar(consultaDtoEntrada);
+        return ResponseEntity.ok(consultaDtoSaida);
     }
 
 }

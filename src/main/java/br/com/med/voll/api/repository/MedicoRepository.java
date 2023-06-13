@@ -11,20 +11,9 @@ import java.time.LocalDateTime;
 @Repository
 public interface MedicoRepository extends JpaRepository<Medico, Integer> {
 
-    @Query("""
-            select m from Medico m
-            where
-            m.ativo = 1
-            and
-            m.especialidade = :especialidade
-            and
-            m.id not in(
-                select c.medico.id from Consulta c
-                where
-                c.data = :data
-            )
-            order by rand()
-            limit 1
-            """)
+    @Query(value = "SELECT m.* FROM medicos m where m.ativo = 1 and m.especialidade = :especialidade and m.id not in (select c.medico_id from consultas c where c.data = :data) order by rand() limit 1", nativeQuery = true)
     Medico escolherMedicoAleatorioLivreNaData(Especialidade especialidade, LocalDateTime data);
+
+    @Query(value = "select m.ativo from medicos m where m.id = :id", nativeQuery = true)
+    Boolean findAtivoById(Integer id);
 }
